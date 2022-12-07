@@ -23,7 +23,7 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   env:
-    SITE_URL : ${{ secrets.local_file_cleanup_site }}
-    USER : ${{ secrets.tri_sharepoint_username }}
-    PASSWD: ${{ secrets.tri_sharepoint_password }}
+    SITE_URL : ${{ secrets.LOCAL_FILE_CLEANUP_SITE }}
+    USER : ${{ secrets.TRI_SHAREPOINT_USERNAME }}
+    PASSWD: ${{ secrets.TRI_SHAREPOINT_PASSWORD }}
     #LIB_FOLDER : ${{ inputs.library_folder }}
