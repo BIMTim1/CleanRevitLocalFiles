@@ -1,5 +1,16 @@
 # This is a basic workflow to help you get started with Actions
 
+#name: sharepoint publish
+
+# on:
+#   push:
+#     branches: ["main"]
+  
+#   workflow_dispath:
+
+# jobs:
+#variable = {{ variable name }}
+
 name: CI
 
 # Controls when the workflow will run
