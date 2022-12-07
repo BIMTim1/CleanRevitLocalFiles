@@ -1,0 +1,29 @@
+# action.yml
+name: 'Publish to Sharepoint'
+description: 'Create a archive of the repository and upload it to a Sharepoint library'
+author: 'Timothy Ingle'
+branding:
+  icon: 'upload-cloud'
+  color: 'green'
+inputs:
+  site_url: 
+    description: 'The Sharepoint site url'
+    required: true
+  sharepoint_user: 
+    description: 'User name to use for authentication'
+    required: true
+  sharepoint_password: 
+    description: 'Password to use for authentication'
+    required: true
+  library_folder: 
+    description: 'The path where to upload the archive in the library'
+    required: false
+    default: "Shared documents"
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    SITE_URL : ${{ secrets.local_file_cleanup_site }}
+    USER : ${{ secrets.tri_sharepoint_username }}
+    PASSWD: ${{ secrets.tri_sharepoint_password }}
+    #LIB_FOLDER : ${{ inputs.library_folder }}
