@@ -18,9 +18,9 @@ function Remove-RevitLocals($RevitFolders, $MainPath, $TempFilePath, $UserName) 
 			Get-ChildItem -Path "$MainPath\$fName\Journals" -Recurse | ForEach-Object {Remove-Item -Recurse -Path $_.FullName}
 		}
 	}
-
+	#delete all local temp files
 	Get-ChildItem -Path $TempFilePath -Recurse | ForEach-Object {Remove-Item -Recurse -Path $_.FullName -ErrorAction SilentlyContinue}
-
+	#empty recycle bin
 	Get-ChildItem -Path "C:\`$Recycle.Bin" -Force | Remove-Item -Recurse -ErrorAction SilentlyContinue
 }
 #get Revit process in background
@@ -33,13 +33,24 @@ if ($rev_process) {
 		#close all Revit processes if accepted by user
 		$rev_process.CloseMainWindow()
 		
-		#pause for 10 seconds while Revit closes
-		Start-Sleep -Seconds 10
+		#if the Revit process is still running, wait
+		Do {
+            if ($rev_process) {
+                Write-Host "$($rev) is still running."
+                Start-Sleep 5
+            }
+        } Until ($rev_process.HasExited)
 
 		#create function to delete local Revit content after Revit has closed
 		Remove-RevitLocals -RevitFolders $revFolders -MainPath $pathMain -TempFilePath $pathTemp -UserName $user_file
 		#notify user function is complete
 		Write-Host "All local Revit content has been removed from $UserName."
+		#prompt user to close PowerShell
+		Read-Host -Prompt "Press Enter to continue"
+	}
+	else {
+		#notify user that the script is canceling
+		Write-Host "This process has been canceled. Rerun the tool to attempt again."
 		#prompt user to close PowerShell
 		Read-Host -Prompt "Press Enter to continue"
 	}
